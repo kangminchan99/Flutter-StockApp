@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:stock_app/utils/theme/theme.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:stock_app/core/utils/injections.dart';
+import 'package:stock_app/core/utils/theme/theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  await initInjections();
   runApp(const MyApp());
 }
 
