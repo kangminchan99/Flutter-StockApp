@@ -8,9 +8,9 @@ import 'package:stock_app/data/src/local/company_listing_entity_adapter.dart';
 final sl = GetIt.instance;
 
 Future<void> initInjections() async {
+  await dotenv.load(fileName: ".env");
   await initDioInjections();
   Hive.registerAdapter(CompanyListingEntityAdapter());
-  await dotenv.load(fileName: ".env");
 }
 
 Future<void> initDioInjections() async {

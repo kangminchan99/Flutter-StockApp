@@ -3,6 +3,7 @@ import 'package:stock_app/core/network/error/dio_error_handler.dart';
 import 'package:stock_app/core/network/error/exceptions.dart';
 import 'package:stock_app/core/network/result.dart';
 import 'package:stock_app/core/utils/constant/config.dart';
+import 'package:stock_app/data/csv/company_listings_parser.dart';
 import 'package:stock_app/data/mapper/company_mapper.dart';
 import 'package:stock_app/data/src/local/stock_dao.dart';
 import 'package:stock_app/data/src/remote/stock_api.dart';
@@ -14,6 +15,8 @@ class StockRepositoryImpl implements StockRepository {
   final StockApi _api;
   // local에서 접근
   final StockDao _dao;
+
+  final _parser = CompanyListingsParser();
 
   StockRepositoryImpl(this._api, this._dao);
 
@@ -39,9 +42,18 @@ class StockRepositoryImpl implements StockRepository {
 
     // remote
     try {
-      final remoteListings = await _api.getListing(Config.stockApiKey);
-      // TODO : CSV Parsing
-      return Result.success([]);
+      final response = await _api.getListing(Config.stockApiKey);
+      final remoteListings = await _parser.parse(response.data);
+
+      // 캐시 비우기
+      await _dao.clearCompanyListings();
+
+      // 캐시 추가
+      await _dao.insertCompanyListings(
+        remoteListings.map((e) => e.toCompanyListingEntity()).toList(),
+      );
+
+      return Result.success(remoteListings);
     } on DioException catch (e) {
       if (e.type == DioExceptionType.cancel) {
         throw CancelTokenException(handleDioError(e), e.response?.statusCode);
