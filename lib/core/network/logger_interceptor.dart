@@ -1,6 +1,8 @@
 // 초기 고정 세팅 값
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+import 'package:stock_app/core/utils/log/app_logger.dart';
 
 // Interceptor - 요청이 보내지기 전, 응답을 받았을 때, 또는 에러가 발생했을 때 Interceptor를 통해 가로채서 수정하거나 로그를 찍거나 처리할 수 있다.
 class LoggerInterceptor extends Interceptor {
@@ -112,3 +114,10 @@ class LoggerInterceptor extends Interceptor {
     logger.info(text);
   }
 }
+
+final dioProvider = Provider((ref) {
+  final dio = Dio();
+
+  dio.interceptors.add(LoggerInterceptor(logger));
+  return dio;
+});

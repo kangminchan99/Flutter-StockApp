@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stock_app/core/utils/constant/config.dart';
 import 'package:stock_app/core/utils/injections.dart';
@@ -5,14 +6,18 @@ import 'package:stock_app/data/csv/company_listings_parser.dart';
 import 'package:stock_app/data/src/remote/stock_api.dart';
 
 void main() {
+  late Dio dio = Dio();
+
   setUp(() async {
-    await initInjections();
+    dio = Dio();
+    await initSettings();
   });
+
   group('Stock Api Test', () {
     test('네트워크 통신', () async {
       final parser = CompanyListingsParser();
 
-      final response = await StockApi().getListing(Config.stockApiKey);
+      final response = await StockApi(dio: dio).getListing(Config.stockApiKey);
 
       final remoteListings = await parser.parse(response.data);
 
