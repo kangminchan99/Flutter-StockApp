@@ -5,7 +5,7 @@ import 'package:stock_app/core/utils/constant/config.dart';
 import 'package:stock_app/data/src/local/company_listing_entity.dart';
 
 class StockDao {
-  final box = Hive.box('stock.db');
+  final box = Hive.box(Config.companyListingBoxName);
 
   // 데이터 추가
   Future<void> insertCompanyListings(
@@ -23,7 +23,7 @@ class StockDao {
   Future<List<CompanyListingEntity>> searchCompanyListing(String query) async {
     final List<CompanyListingEntity> companyListing = box.get(
       Config.companyListing,
-      defaultValue: [],
+      defaultValue: <CompanyListingEntity>[],
     );
 
     return companyListing

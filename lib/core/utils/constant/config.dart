@@ -4,4 +4,5 @@ class Config {
   static String get stockBaseUrl => dotenv.env['STOCK_BASE_URL'] ?? '';
   static String get stockApiKey => dotenv.env['STOCK_API_KEY'] ?? '';
   static const String companyListing = 'companyListing';
+  static const String companyListingBoxName = 'stock.db';
 }
