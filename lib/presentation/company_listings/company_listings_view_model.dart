@@ -10,7 +10,13 @@ class CompanyListingsViewModel extends Notifier<CompanyListingsState> {
   @override
   CompanyListingsState build() {
     _repository = ref.read(stockRepositoryProvider);
-    return CompanyListingsState();
+    // 1) 초기 상태
+    final initial = const CompanyListingsState();
+
+    // 2) 초기 로딩은 다음 마이크로태스크로
+    Future.microtask(() => getCompanyListings());
+
+    return initial;
   }
 
   Future<void> getCompanyListings({
