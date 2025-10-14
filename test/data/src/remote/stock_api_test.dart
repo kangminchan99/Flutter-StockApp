@@ -6,10 +6,10 @@ import 'package:mockito/mockito.dart';
 import 'package:stock_app/core/utils/constant/config.dart';
 import 'package:stock_app/core/utils/constant/network_constant.dart';
 import 'package:stock_app/core/utils/log/app_logger.dart';
-import 'package:stock_app/data/csv/company_listings_parser.dart';
 import 'package:stock_app/data/src/remote/stock_api.dart';
 
 import '../../../dummy.dart';
+import '../../csv/fake_company_listings_parser.dart';
 import 'stock_api_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<Dio>()])
@@ -25,13 +25,13 @@ void main() {
 
   group('Stock Api Test', () {
     test('네트워크 통신', () async {
-      final parser = CompanyListingsParser();
+      final parser = FakeCompanyListingsParser();
 
       when(mockDio.get(getListingsPath())).thenAnswer(
         (_) async => Response(
           requestOptions: RequestOptions(),
           statusCode: 200,
-          data: Dummy.dummyList,
+          data: Dummy.dummyData,
         ),
       );
 
