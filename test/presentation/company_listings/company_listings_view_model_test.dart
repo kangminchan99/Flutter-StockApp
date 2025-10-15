@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stock_app/domain/repository/stock_repository.dart';
-import 'package:stock_app/presentation/company_listings/company_listings_view_model.dart';
+import 'package:stock_app/presentation/company_listings/view_model/company_listings_view_model.dart';
 
 import '../../domain/repository/stock_repository_test.dart';
 

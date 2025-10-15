@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stock_app/presentation/company_listings/company_listings_view_model.dart';
+import 'package:stock_app/presentation/company_listings/company_listings_action.dart';
+import 'package:stock_app/presentation/company_listings/view_model/company_listings_view_model.dart';
 
 class CompanyListingsScreen extends ConsumerWidget {
   const CompanyListingsScreen({super.key});
@@ -8,6 +9,7 @@ class CompanyListingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.watch(companyListingsVmProvider);
+    final vmNoti = ref.read(companyListingsVmProvider.notifier);
 
     return Scaffold(
       body: SafeArea(
@@ -15,11 +17,20 @@ class CompanyListingsScreen extends ConsumerWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: TextField(decoration: InputDecoration(labelText: '검색..')),
+              child: TextField(
+                onChanged: (query) {
+                  vmNoti.onAction(
+                    CompanyListingsAction.onSearchQueryChange(query),
+                  );
+                },
+                decoration: InputDecoration(labelText: '검색..'),
+              ),
             ),
             Expanded(
               child: RefreshIndicator(
-                onRefresh: () async {},
+                onRefresh: () async {
+                  vmNoti.onAction(const CompanyListingsAction.refresh());
+                },
                 child: ListView.builder(
                   itemCount: vm.companies.length,
                   itemBuilder: (context, index) {

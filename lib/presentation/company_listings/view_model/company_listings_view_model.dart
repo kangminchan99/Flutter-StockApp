@@ -1,11 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stock_app/core/network/result.dart';
 import 'package:stock_app/domain/repository/stock_repository.dart';
+import 'package:stock_app/presentation/company_listings/company_listings_action.dart';
 import 'package:stock_app/presentation/company_listings/company_listings_state.dart';
 
 class CompanyListingsViewModel extends Notifier<CompanyListingsState> {
   // repository가 많을 경우 usecase로 묶어서 하는게 좋음
   late final StockRepository _repository;
+
+  Timer? _debounce;
 
   @override
   CompanyListingsState build() {
@@ -17,6 +22,18 @@ class CompanyListingsViewModel extends Notifier<CompanyListingsState> {
     Future.microtask(() => getCompanyListings());
 
     return initial;
+  }
+
+  void onAction(CompanyListingsAction action) {
+    action.when(
+      refresh: () => getCompanyListings(fetchFromRemote: true),
+      onSearchQueryChange: (query) {
+        _debounce?.cancel();
+        _debounce = Timer(const Duration(milliseconds: 500), () {
+          getCompanyListings(query: query);
+        });
+      },
+    );
   }
 
   Future<void> getCompanyListings({

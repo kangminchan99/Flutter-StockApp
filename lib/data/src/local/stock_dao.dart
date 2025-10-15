@@ -19,18 +19,25 @@ class StockDao {
     await box.clear();
   }
 
-  // 데이터 검색
   Future<List<CompanyListingEntity>> searchCompanyListing(String query) async {
-    final List<CompanyListingEntity> companyListing = box.get(
-      Config.companyListing,
-      defaultValue: <CompanyListingEntity>[],
-    );
+    // 박스에 개별 엔티티가 들어있는 경우
+    final companyListing = box.values.cast<CompanyListingEntity>().toList();
+
+    final q = query.trim();
+    if (q.isEmpty) return [];
+
+    final qLower = q.toLowerCase();
+    final qUpper = q.toUpperCase();
 
     return companyListing
         .where(
           (e) =>
-              e.name.toLowerCase().contains(query.toLowerCase()) ||
-              query.toUpperCase() == e.symbol,
+              e.name.isNotEmpty && e.symbol.isNotEmpty && e.exchange.isNotEmpty,
+        )
+        .where(
+          (e) =>
+              e.name.toLowerCase().contains(qLower) ||
+              e.symbol.toUpperCase() == qUpper,
         )
         .toList();
   }
