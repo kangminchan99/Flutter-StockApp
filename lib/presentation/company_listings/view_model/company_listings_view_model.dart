@@ -44,14 +44,12 @@ class CompanyListingsViewModel extends Notifier<CompanyListingsState> {
     final result = await _repository.getCompanyListings(fetchFromRemote, query);
     result.when(
       success: (listings) {
-        state = state.copyWith(companies: listings);
+        state = state.copyWith(companies: listings, isLoading: false);
       },
       failure: (e) {
-        // TODO: error 처리
-        print('리모트 에러 $e');
+        state = state.copyWith(companies: [], isLoading: false);
       },
     );
-    state = state.copyWith(isLoading: false);
   }
 }
 

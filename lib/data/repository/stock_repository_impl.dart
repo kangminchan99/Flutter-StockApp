@@ -7,6 +7,7 @@ import 'package:stock_app/data/csv/company_listings_parser.dart';
 import 'package:stock_app/data/mapper/company_mapper.dart';
 import 'package:stock_app/data/src/local/stock_dao.dart';
 import 'package:stock_app/data/src/remote/stock_api.dart';
+import 'package:stock_app/domain/model/company_info_model.dart';
 import 'package:stock_app/domain/model/company_listing_model.dart';
 import 'package:stock_app/domain/repository/stock_repository.dart';
 
@@ -54,6 +55,25 @@ class StockRepositoryImpl implements StockRepository {
       );
 
       return Result.success(remoteListings);
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.cancel) {
+        throw CancelTokenException(handleDioError(e), e.response?.statusCode);
+      } else {
+        throw ServerException(handleDioError(e), e.response?.statusCode);
+      }
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      throw ServerException(e.toString(), null);
+    }
+  }
+
+  @override
+  Future<Result<CompanyInfoModel>> getCompanyInfo(String symbol) async {
+    try {
+      final dto = await _api.getCompanyInfo(Config.stockApiKey, symbol: symbol);
+
+      return Result.success(dto.toCompanyInfoModel());
     } on DioException catch (e) {
       if (e.type == DioExceptionType.cancel) {
         throw CancelTokenException(handleDioError(e), e.response?.statusCode);
