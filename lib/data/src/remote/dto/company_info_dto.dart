@@ -11,6 +11,7 @@ abstract class CompanyInfoDto with _$CompanyInfoDto {
     @JsonKey(name: 'Name') String? name,
     @JsonKey(name: 'Country') String? country,
     @JsonKey(name: 'Industry') String? industry,
+    @JsonKey(name: 'Information') String? information,
   }) = _CompanyInfoDto;
 
   factory CompanyInfoDto.fromJson(Map<String, dynamic> json) =>

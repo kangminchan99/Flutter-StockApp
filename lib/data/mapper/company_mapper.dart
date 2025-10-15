@@ -26,6 +26,7 @@ extension ToCompanyInfoModel on CompanyInfoDto {
       name: name ?? '',
       country: country ?? '',
       industry: industry ?? '',
+      information: information ?? '',
     );
   }
 }

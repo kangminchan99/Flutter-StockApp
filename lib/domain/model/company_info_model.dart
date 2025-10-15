@@ -11,6 +11,7 @@ abstract class CompanyInfoModel with _$CompanyInfoModel {
     required String name,
     required String country,
     required String industry,
+    @Default('') String information,
   }) = _CompanyInfoModel;
 
   factory CompanyInfoModel.fromJson(Map<String, dynamic> json) =>

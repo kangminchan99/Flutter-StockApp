@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stock_app/presentation/company_info/view/company_info_screen.dart';
 import 'package:stock_app/presentation/company_listings/company_listings_action.dart';
 import 'package:stock_app/presentation/company_listings/view_model/company_listings_view_model.dart';
 
@@ -36,7 +37,19 @@ class CompanyListingsScreen extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     return Column(
                       children: [
-                        ListTile(title: Text(vm.companies[index].name)),
+                        ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CompanyInfoScreen(
+                                  symbol: vm.companies[index].symbol,
+                                ),
+                              ),
+                            );
+                          },
+                          title: Text(vm.companies[index].name),
+                        ),
                         Divider(color: Theme.of(context).colorScheme.secondary),
                       ],
                     );

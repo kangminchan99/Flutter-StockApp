@@ -8,5 +8,7 @@ abstract class CompanyInfoState with _$CompanyInfoState {
   const factory CompanyInfoState({
     @Default(false) bool isLoading,
     CompanyInfoModel? company,
+    String? errorMsg,
+    String? information,
   }) = _CompanyInfoState;
 }
