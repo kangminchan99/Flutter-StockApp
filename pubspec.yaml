@@ -45,6 +45,7 @@ dependencies:
   csv: ^6.0.0
   flutter_riverpod: ^2.6.1
   mockito: ^5.5.1
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

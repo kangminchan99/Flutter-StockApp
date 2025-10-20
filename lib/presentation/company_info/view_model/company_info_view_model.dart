@@ -37,6 +37,26 @@ class CompanyInfoViewModel extends FamilyNotifier<CompanyInfoState, String> {
         );
       },
     );
+
+    final intradayInfo = await _repository.getIntradayInfo(symbol);
+
+    intradayInfo.when(
+      success: (info) {
+        state = state.copyWith(
+          stockInfos: info,
+          isLoading: false,
+          errorMsg: null,
+        );
+      },
+      failure: (e) {
+        final errorInfoMsg = 'Failed to load intraday info: ${e.toString()}';
+        state = state.copyWith(
+          isLoading: false,
+          errorMsg: errorInfoMsg,
+          stockInfos: [],
+        );
+      },
+    );
   }
 }
 

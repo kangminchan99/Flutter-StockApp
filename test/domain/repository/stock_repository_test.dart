@@ -1,6 +1,7 @@
 import 'package:stock_app/core/network/result.dart';
 import 'package:stock_app/domain/model/company_info_model.dart';
 import 'package:stock_app/domain/model/company_listing_model.dart';
+import 'package:stock_app/domain/model/intraday_info_model.dart';
 import 'package:stock_app/domain/repository/stock_repository.dart';
 
 class FakeStockRepository implements StockRepository {
@@ -16,6 +17,11 @@ class FakeStockRepository implements StockRepository {
 
   @override
   Future<Result<CompanyInfoModel>> getCompanyInfo(String symbol) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Result<List<IntradayInfoModel>>> getIntradayInfo(String symbol) {
     throw UnimplementedError();
   }
 }

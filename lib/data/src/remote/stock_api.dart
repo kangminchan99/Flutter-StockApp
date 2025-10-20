@@ -21,6 +21,13 @@ class StockApi {
 
     return CompanyInfoDto.fromJson(response.data);
   }
+
+  Future<Response> getIntradayInfo(
+    String apiKey, {
+    required String symbol,
+  }) async {
+    return await _dio.get(getIntradayInfoPath(symbol));
+  }
 }
 
 final stockApiProvider = Provider<StockApi>((ref) {

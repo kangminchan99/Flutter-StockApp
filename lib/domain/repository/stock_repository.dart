@@ -5,6 +5,7 @@ import 'package:stock_app/data/src/local/stock_dao.dart';
 import 'package:stock_app/data/src/remote/stock_api.dart';
 import 'package:stock_app/domain/model/company_info_model.dart';
 import 'package:stock_app/domain/model/company_listing_model.dart';
+import 'package:stock_app/domain/model/intraday_info_model.dart';
 
 abstract class StockRepository {
   Future<Result<List<CompanyListingModel>>> getCompanyListings(
@@ -13,6 +14,8 @@ abstract class StockRepository {
   );
 
   Future<Result<CompanyInfoModel>> getCompanyInfo(String symbol);
+
+  Future<Result<List<IntradayInfoModel>>> getIntradayInfo(String symbol);
 }
 
 final stockRepositoryProvider = Provider<StockRepository>((ref) {
